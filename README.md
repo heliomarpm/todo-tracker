@@ -1,4 +1,4 @@
-# todo-tracker
+# Time Tracker
 
 ## Project setup
 ```
