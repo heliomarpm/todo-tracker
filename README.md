@@ -1,5 +1,7 @@
 # Time Tracker
 
+Project WIP
+
 ## Project setup
 ```
 npm install
