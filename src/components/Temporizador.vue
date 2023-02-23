@@ -17,6 +17,7 @@ export default defineComponent({
         Cronometro,
         Botao,
     },
+    emits:["onTimerStopped"],
     data() {
         return {
             timeInSeconds: 0,
@@ -37,6 +38,7 @@ export default defineComponent({
             this.timerStarted = false;
             clearInterval(this.idTimer); //stopped
 
+            this.$emit("onTimerStopped", this.timeInSeconds);
             this.timeInSeconds = 0;
         }
     }
