@@ -17,6 +17,7 @@ export default defineComponent({
     },
     computed: {
         elapsedTime(): string {
+            // 1 seg = 1000 ms
             return new Date(this.secondTime * 1000).toISOString().substring(11, 19)
         }
     },

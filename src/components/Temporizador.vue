@@ -1,30 +1,26 @@
 <template>
     <div class="is-flex is-align-items-center is-justify-content-space-between">
-        <Cronometro :secondTime="secondTime" />
-        <button class="button" @click="start" :disabled="timerStarted">
-            <span class="icon"><i class="fas fa-play"></i></span>
-            <span>play</span>
-        </button>
-        <button class="button" @click="stop" :disabled="!timerStarted">
-            <span class="icon"><i class="fas fa-stop"></i></span>
-            <span>stop</span>
-        </button>
+        <Cronometro :secondTime="timeInSeconds" />
+        <Botao text="start" @onClick="start" icon="fas fa-play" :disabled="timerStarted" />
+        <Botao text="stop" @onClick="stop" icon="fas fa-stop" :disabled="!timerStarted"/>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Cronometro from "./Cronometro.vue";
+import Botao from "./Botao.vue";
 
 export default defineComponent({
     name: "_Formulario",
     components: {
         Cronometro,
+        Botao,
     },
     data() {
         return {
-            secondTime: 0,
-            idSecondTime: 0,
+            timeInSeconds: 0,
+            idTimer: 0,
             timerStarted: false,
         }
     },
@@ -32,14 +28,16 @@ export default defineComponent({
         start() {
             console.log("start");
             this.timerStarted = true;
-            this.idSecondTime = setInterval(() => {
-                this.secondTime++;
+            this.idTimer = setInterval(() => {
+                this.timeInSeconds++;
             }, 1000)
         },
         stop() {
             console.log("stop");
             this.timerStarted = false;
-            clearInterval(this.idSecondTime);
+            clearInterval(this.idTimer); //stopped
+
+            this.timeInSeconds = 0;
         }
     }
 });
