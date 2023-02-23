@@ -7,6 +7,10 @@
       <Formulario @onSaveTask="addTask"/>
       <div class="list">
         <Tarefa v-for="(task, index) in tasks" :key="index" :task="task" />
+
+        <Box v-if="tasks.length===0">
+          Você ainda não adicionou nenhuma tarefa!
+        </Box>
       </div>
     </div>
   </main>
@@ -17,7 +21,9 @@ import { defineComponent } from 'vue';
 
 import BarraLateral from './components/BarraLateral.vue';
 import Formulario from './components/Formulario.vue';
+import Box from './components/Box.vue';
 import Tarefa from './components/Tarefa.vue';
+
 import ITask from './interfaces/ITask';
 
 export default defineComponent({
@@ -25,7 +31,8 @@ export default defineComponent({
   components: {
     BarraLateral,
     Formulario,
-    Tarefa
+    Tarefa,
+    Box
   },
   data() {
     return {
