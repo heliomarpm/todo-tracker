@@ -1,9 +1,9 @@
 <template>
-  <main class="columns is-gapless is-multiline">
+  <main class="columns is-gapless is-multiline" :class="{'dark-mode': darkModeOn}">
     <div class="column is-one-quarter">
-      <BarraLateral />
+      <BarraLateral @onChangeTheme="changeTheme" />
     </div>
-    <div class="column is-three-quarter">
+    <div class="column is-three-quarter content">
       <Formulario @onSaveTask="addTask"/>
       <div class="list">
         <Tarefa v-for="(task, index) in tasks" :key="index" :task="task" />
@@ -25,6 +25,7 @@ import Box from './components/Box.vue';
 import Tarefa from './components/Tarefa.vue';
 
 import ITask from './interfaces/ITask';
+import { FLIPPED_ALIAS_KEYS } from '@babel/types';
 
 export default defineComponent({
   name: 'App',
@@ -37,6 +38,7 @@ export default defineComponent({
   data() {
     return {
       tasks: (localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks') as string) : []) as ITask[],
+      darkModeOn: false,
     }
   },
   methods: {
@@ -49,6 +51,9 @@ export default defineComponent({
       console.log("removeTask", task);
       // this.tasks = this.tasks.filter(t => t.id !== task.id);
       //localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    },
+    changeTheme(darkMode: boolean) {
+      this.darkModeOn = darkMode;
     }
   }
 
@@ -65,12 +70,12 @@ main {
   --texto-primario: #000;
 }
 
-main.modo-escuro {
+main.dark-mode {
   --bg-primario: #2b2d42;
   --texto-primario: #ddd;
 }
 
-.conteudo {
+.content {
   background-color: var(--bg-primario);
 }
 </style>
