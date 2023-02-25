@@ -25,7 +25,6 @@ import Box from './components/Box.vue';
 import Tarefa from './components/Tarefa.vue';
 
 import ITask from './interfaces/ITask';
-import { FLIPPED_ALIAS_KEYS } from '@babel/types';
 
 export default defineComponent({
   name: 'App',
