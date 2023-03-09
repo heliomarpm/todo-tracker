@@ -42,6 +42,9 @@ export default defineComponent({
             this.tasks.splice(this.tasks.indexOf(task), 1)
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
         }
+    },
+    created() {
+        // console.log(this.$router);
     }
 
 });
