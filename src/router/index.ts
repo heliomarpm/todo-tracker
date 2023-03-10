@@ -27,7 +27,7 @@ export default createRouter({
             path: '/project', name: 'new project', component: () => import('../pages/projects/Form.vue')
         },
         {
-            path: '/project/:id', name: 'edit project', component: () => import('../pages/projects/Form.vue')
+            path: '/project/:id', name: 'edit project', component: () => import('../pages/projects/Form.vue'), props: true
         },
         {
             path: '/about', name: 'about', component: () => import('../pages/AboutPage.vue')

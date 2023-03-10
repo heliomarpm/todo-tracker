@@ -18,15 +18,24 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from "@/store";
-import { ADD_PROJECT } from '@/store/mutations.types';
-// import IProject from '@/interfaces/IProject';
+
+import { ADD_PROJECT, EDIT_PROJECT } from '@/store/mutations.types';
 
 export default defineComponent({
     name: "_FormProject",
+    props: {
+        id: { type: String }
+    },
     setup() {
         const store = useStore();
         return {
             store
+        }
+    },
+    mounted() {
+        if (this.id) {
+            const project = this.store.state.projects.find(p => p.id === this.id);
+            this.projectName = project?.name || '';
         }
     },
     data() {
@@ -42,9 +51,21 @@ export default defineComponent({
             //     name: this.projectName
             // };
             // this.projectsList.push(project);
-            this.store.commit(ADD_PROJECT, this.projectName);
+
+            if (this.id) {
+                // EDICAO
+                this.store.commit(EDIT_PROJECT, {
+                    id: this.id,
+                    name: this.projectName
+                });
+            }
+            else {
+                this.store.commit(ADD_PROJECT, this.projectName);
+            }
             this.projectName = "";
             this.$router.push("/projects");
+
+
         }
     }
 })

@@ -1,12 +1,12 @@
 // import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import { InjectionKey } from "vue";
-import { ADD_PROJECT, REMOVE_PROJECT } from "./mutations.types";
+import { ADD_PROJECT, EDIT_PROJECT, REMOVE_PROJECT } from "./mutations.types";
 
 import IProject from "@/interfaces/IProject";
 
 export interface IState {
-    projetcs: IProject[]
+    projects: IProject[]
 }
 
 export const keyStore: InjectionKey<Store<IState>> = Symbol();
@@ -14,10 +14,10 @@ export const keyStore: InjectionKey<Store<IState>> = Symbol();
 export const store = createStore<IState>({
     // https://vuex.vuejs.org/ptbr/guide/state
     state: {
-        projetcs: [
-            { id: new Date().toISOString(), name: "Typescript" },
-            { id: new Date().toISOString(), name: "Vue3" },
-            { id: new Date().toISOString(), name: "Vuex" },
+        projects: [
+            // { id: new Date().toISOString(), name: "Typescript" },
+            // { id: new Date().toISOString(), name: "Vue3" },
+            // { id: new Date().toISOString(), name: "Vuex" },
         ]
     },
     // https://vuex.vuejs.org/ptbr/guide/mutations
@@ -28,10 +28,15 @@ export const store = createStore<IState>({
                 name: projectName
             } as IProject
 
-            state.projetcs.push(project);
+            state.projects.push(project);
         },
         [REMOVE_PROJECT](state, id: string) {
-            state.projetcs = state.projetcs.filter(projet => projet.id !== id);
+            state.projects = state.projects.filter(p => p.id !== id);
+        },
+        [EDIT_PROJECT](state, project: IProject) {
+            const index = state.projects.findIndex(p => p.id === project.id);
+            state.projects[index] = project;
+
         }
     }
 });
