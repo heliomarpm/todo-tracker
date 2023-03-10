@@ -24,29 +24,40 @@
                                 <i class="fas fa-pencil-alt"></i>
                             </span>
                         </router-link>
+                        <button class="button is-danger" @click="removeProject(project.id)">
+                            <span class="icon is-small">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <code>
-            {{ projects }}
-        </code>
+                {{ projects }}
+            </code>
     </section>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from "@/store";
+import { REMOVE_PROJECT } from '@/store/mutations.types';
 
 export default defineComponent({
     name: "ProjectListPage",
     setup() {
         const store = useStore();
         return {
+            store,
             projects: computed(() => store.state.projects),
         }
     },
-
+    methods: {
+        removeProject(id: string) {
+            this.store.commit(REMOVE_PROJECT, id);
+        }
+    },
 })
 
 </script>
