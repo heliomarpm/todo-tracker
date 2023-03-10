@@ -1,6 +1,5 @@
 <template>
-    <section class="section">
-        <h1 class="title">Projetos</h1>
+    <section>
         <form @submit.prevent="save">
             <div class="field">
                 <label for="projectName" class="label">Nome do Projeto</label>
@@ -22,7 +21,7 @@ import { useStore } from "@/store";
 import { ADD_PROJECT, EDIT_PROJECT } from '@/store/mutations.types';
 
 export default defineComponent({
-    name: "_FormProject",
+    name: "ProjectFormPage",
     props: {
         id: { type: String }
     },
