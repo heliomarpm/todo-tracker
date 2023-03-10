@@ -5,7 +5,7 @@
             <div class="column">
                 <Cronometro :secondTime="task.timeInSeconds" />
             </div>
-            <Botao text="remover" @onClick="removeTask()" icon="fas fa-remove" />
+            <Botao text="remover" @onClick="removeTask()" icon="fas fa-trash" />
         </div>
     </Box>
 </template>

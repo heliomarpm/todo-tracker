@@ -24,6 +24,12 @@ export default createRouter({
             path: '/projects', name: 'projects', component: () => import('../pages/ProjectsPage.vue')
         },
         {
+            path: '/project', name: 'new project', component: () => import('../pages/projects/Form.vue')
+        },
+        {
+            path: '/project/:id', name: 'edit project', component: () => import('../pages/projects/Form.vue')
+        },
+        {
             path: '/about', name: 'about', component: () => import('../pages/AboutPage.vue')
         }
     ]
