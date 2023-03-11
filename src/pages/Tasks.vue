@@ -12,11 +12,12 @@
 </template>
   
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useStore } from '@/store';
 
-import Formulario from '../components/Formulario.vue';
+import Formulario from './tasks/Add.vue';
 import Box from '../components/Box.vue';
-import Tarefa from '../components/Tarefa.vue';
+import Tarefa from './tasks/Task.vue';
 
 import ITask from '../interfaces/ITask';
 
@@ -27,20 +28,30 @@ export default defineComponent({
         Tarefa,
         Box
     },
-    data() {
+    setup() {
+        const store = useStore();
         return {
-            tasks: (localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks') as string) : []) as ITask[]
+            store,
+            tasks: computed(() => store.state.tasks),
         }
     },
+    // data() {
+    //     return {
+    //         tasks: (localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks') as string) : []) as ITask[]
+    //     }
+    // },
     methods: {
         addTask(task: ITask) {
             console.log("addTask", task);
-            this.tasks.push(task);
-            localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            // this.tasks.push(task);
+            // localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            this.store.commit('ADD_TASK', task);
         },
         removeTask(task: ITask) {
-            this.tasks.splice(this.tasks.indexOf(task), 1)
-            localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            console.log("removeTask", task);
+            // this.tasks.splice(this.tasks.indexOf(task), 1)
+            // localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            this.store.commit('REMOVE_TASK', task.id);
         }
     },
     created() {

@@ -23,21 +23,23 @@
 </template>
 
 <script lang="ts">
-import { keyStore } from "@/store";
+import { useStore, store } from "@/store";
+import { ADD_TASK } from "@/store/mutations.types";
 import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
-import Temporizador from "./Temporizador.vue";
+
+import Temporizador from "../../components/Temporizador.vue";
 
 export default defineComponent({
-    name: "_Formulario",
+    name: "AddTaskComp",
     components: {
         Temporizador,
     },
-    emits: ["onSaveTask"],
+    // emits: ["onSaveTask"],
     setup() {
-        const store = useStore(keyStore);
+        const store = useStore();
         return {
-            projects: computed(() => store.state.projects)
+            projects: computed(() => store.state.projects),
+            tasks: computed(()=> store.state.tasks)
         }
     },
     data() {
@@ -48,12 +50,18 @@ export default defineComponent({
     },
     methods: {
         stopTask(timeInSeconds: number): void {
-            console.log(`Tempo da tarefa [${this.description}]:`, timeInSeconds);
-            this.$emit("onSaveTask", {
+            console.log(`stopTask [${this.description}]:`, timeInSeconds);
+            store.commit(ADD_TASK, {
                 description: this.description,
                 timeInSeconds: timeInSeconds,
                 project: this.projects.find(p => p.id === this.idProject)
             });
+
+            // this.$emit("onSaveTask", {
+            //     description: this.description,
+            //     timeInSeconds: timeInSeconds,
+            //     project: this.projects.find(p => p.id === this.idProject)
+            // });
             this.description = "";
         }
     }

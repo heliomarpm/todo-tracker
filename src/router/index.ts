@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-import TasksPage from '../pages/TasksPage.vue';
-import ProjectsPage from "../pages/ProjectsPage.vue";
+import TasksPage from '../pages/Tasks.vue';
+import ProjectsPage from "../pages/Projects.vue";
 
 // const routes: RouteRecordRaw[] = [
 //     {
@@ -26,18 +26,18 @@ export default createRouter({
             component: ProjectsPage,
             children: [
                 {
-                    path: '', name: 'projects', component: () => import('../pages/projects/ListPage.vue')
+                    path: '', name: 'projects', component: () => import('../pages/projects/List.vue')
                 },
                 {
-                    path: 'new', name: 'new project', component: () => import('../pages/projects/FormPage.vue')
+                    path: 'add', name: 'new project', component: () => import('../pages/projects/AddEdit.vue')
                 },
                 {
-                    path: ':id', name: 'edit project', component: () => import('../pages/projects/FormPage.vue'), props: true
+                    path: 'edit:id', name: 'edit project', component: () => import('../pages/projects/AddEdit.vue'), props: true
                 },
             ]
         },
         {
-            path: '/about', name: 'about', component: () => import('../pages/AboutPage.vue')
+            path: '/about', name: 'about', component: () => import('../pages/About.vue')
         }
     ]
 });

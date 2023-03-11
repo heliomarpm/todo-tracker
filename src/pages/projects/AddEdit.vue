@@ -21,7 +21,7 @@ import { useStore } from "@/store";
 import { ADD_PROJECT, EDIT_PROJECT } from '@/store/mutations.types';
 
 export default defineComponent({
-    name: "ProjectFormPage",
+    name: "ProjectAddEdit",
     props: {
         id: { type: String }
     },

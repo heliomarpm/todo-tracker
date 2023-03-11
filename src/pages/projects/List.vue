@@ -1,6 +1,6 @@
 <template>
     <section>
-        <RouterLink to="/projects/new" class="button">
+        <RouterLink to="/projects/add" class="button">
             <span class="icon">
                 <i class="fas fa-plus"></i>
             </span>
@@ -19,7 +19,7 @@
                     <td>{{ project.id }}</td>
                     <td>{{ project.name }}</td>
                     <td>
-                        <router-link :to="`/projects/${project.id}`" class="button">
+                        <router-link :to="`/projects/edit/${project.id}`" class="button">
                             <span class="icon is-small">
                                 <i class="fas fa-pencil-alt"></i>
                             </span>
@@ -45,7 +45,7 @@ import { useStore } from "@/store";
 import { REMOVE_PROJECT } from '@/store/mutations.types';
 
 export default defineComponent({
-    name: "ProjectListPage",
+    name: "ProjectList",
     setup() {
         const store = useStore();
         return {
