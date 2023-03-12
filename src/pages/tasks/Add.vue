@@ -9,7 +9,7 @@
                 <div class="select">
                     <select v-model="projectId">
                         <option value="">Selecione o projeto</option>
-                        <option v-for="project in projects" :key="project.id" :value="project.id" >
+                        <option v-for="project in projects" :key="project.id" :value="project.id">
                             {{ project.name }}
                         </option>
                     </select>
@@ -25,10 +25,11 @@
 <script lang="ts">
 import { NotifyType } from "@/interfaces/INotify";
 import { useStore, store } from "@/store"
-import { ADD_TASK, NOTIFY } from "@/store/mutations.types";
+import { ADD_TASK } from "@/store/mutations.types";
 import { computed, defineComponent } from "vue";
 
 import Temporizador from "../../components/Temporizador.vue";
+import useNotificator from "@/hooks/notify.hook";
 
 export default defineComponent({
     name: "AddTaskComp",
@@ -38,10 +39,13 @@ export default defineComponent({
     // emits: ["onSaveTask"],
     setup() {
         const store = useStore();
+        const { notify } = useNotificator();
+
         return {
             store,
+            notify,
             projects: computed(() => store.state.projects),
-            tasks: computed(()=> store.state.tasks)
+            tasks: computed(() => store.state.tasks)
         }
     },
     data() {
@@ -59,6 +63,12 @@ export default defineComponent({
                 project: this.projects.find(p => p.id === this.projectId)
             });
 
+            this.notify(
+                "Tudo certo",
+                `Tarefa [${this.description}], adicionada com sucesso!`,
+                NotifyType.SUCCESS);
+
+
             // this.$emit("onSaveTask", {
             //     description: this.description,
             //     timeInSeconds: timeInSeconds,
@@ -75,7 +85,8 @@ div.form {
     color: var(--texto-primario);
     background-color: var(--bg-primario);
 }
+
 .button {
-  margin-left: 8px;
+    margin-left: 8px;
 }
 </style>
