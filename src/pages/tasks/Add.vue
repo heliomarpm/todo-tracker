@@ -51,7 +51,7 @@ export default defineComponent({
     data() {
         return {
             description: "",
-            projectId: ""
+            projectId: 0
         }
     },
     methods: {

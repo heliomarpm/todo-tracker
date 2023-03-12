@@ -34,21 +34,24 @@
             </tbody>
         </table>
         <code>
-                {{ projects }}
-            </code>
+                        {{ projects }}
+                    </code>
     </section>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from "@/store"
-import { REMOVE_PROJECT } from '@/store/mutations.types';
+
 import { NotifyType } from '@/interfaces/INotify';
+import { GET_PROJECTS, REMOVE_PROJECT } from '@/store/actions.types';
 
 export default defineComponent({
     name: "ProjectList",
     setup() {
         const store = useStore();
+        store.dispatch(GET_PROJECTS);   // disparando a ACTION
+
         return {
             store,
             projects: computed(() => store.state.projects),
@@ -56,12 +59,16 @@ export default defineComponent({
     },
     methods: {
         removeProject(id: string) {
-            this.store.commit(REMOVE_PROJECT, id);
-            this.store.commit("NOTIFY", {
-                title: "PROJETO",
-                description: "Projeto REMOVIDO com sucesso!",
-                type: NotifyType.SUCCESS
-            })
+            // this.store.commit(REMOVE_PROJECT, id);
+
+            this.store.dispatch(REMOVE_PROJECT, id)
+                .then(() => {
+                    this.store.commit("NOTIFY", {
+                        title: "PROJETO",
+                        description: "Projeto REMOVIDO com sucesso!",
+                        type: NotifyType.SUCCESS
+                    })
+                });
         }
     },
 })
