@@ -4,7 +4,8 @@
       <BarraLateral @onChangeTheme="changeTheme" />
     </div>
     <div class="column is-three-quarter content">
-      <router-view></router-view>
+      <Notify />
+      <router-view />
     </div>
   </main>
 </template>
@@ -13,11 +14,13 @@
 import { defineComponent } from 'vue';
 
 import BarraLateral from './components/BarraLateral.vue';
+import Notify from './components/Notify.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    BarraLateral
+    BarraLateral,
+    Notify
   },
   data() {
     return {

@@ -15,10 +15,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { useStore } from "@/store";
+import { computed, defineComponent } from 'vue';
+import { useStore } from "@/store"
 
-import { ADD_PROJECT, EDIT_PROJECT } from '@/store/mutations.types';
+import { ADD_PROJECT, EDIT_PROJECT, NOTIFY } from '@/store/mutations.types';
+import { NotifyType } from '@/interfaces/INotify';
 
 export default defineComponent({
     name: "ProjectAddEdit",
@@ -45,6 +46,7 @@ export default defineComponent({
     },
     methods: {
         save() {
+
             // const project: IProject = {
             //     id: new Date().toISOString(),
             //     name: this.projectName
@@ -52,6 +54,16 @@ export default defineComponent({
             // this.projectsList.push(project);
 
             if (this.id) {
+                const projeto = this.store.state.projects.find((p) => p.id !== this.id && p.name === this.projectName); // primeiro, buscamos pelo projeto
+                if (projeto) { // se o projeto não existe...
+                    this.store.commit(NOTIFY, {
+                        title: 'Ops!',
+                        description: "Já existe um projeto com esse nome!",
+                        type: NotifyType.ERROR,
+                    }); // notificamos o usuário
+                    return; // ao fazer return aqui, o restante do método salvarTarefa não será executado. chamamos essa técnica de early return :)
+                }
+
                 // EDICAO
                 this.store.commit(EDIT_PROJECT, {
                     id: this.id,
@@ -59,12 +71,25 @@ export default defineComponent({
                 });
             }
             else {
+                const projeto = this.store.state.projects.find((p) => p.name === this.projectName); // primeiro, buscamos pelo projeto
+                if (projeto) { // se o projeto não existe...
+                    this.store.commit(NOTIFY, {
+                        title: 'Ops!',
+                        description: "Projeto já cadastrado!",
+                        type: NotifyType.ERROR,
+                    }); // notificamos o usuário
+                    return; // ao fazer return aqui, o restante do método salvarTarefa não será executado. chamamos essa técnica de early return :)
+                }
                 this.store.commit(ADD_PROJECT, this.projectName);
             }
             this.projectName = "";
+
+            this.store.commit("NOTIFY", {
+                title: "PROJETO",
+                description: "Projeto GRAVADO com sucesso!",
+                type: NotifyType.SUCCESS
+            })
             this.$router.push("/projects");
-
-
         }
     }
 })

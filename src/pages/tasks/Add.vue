@@ -7,7 +7,7 @@
             </div>
             <div class="column is-3">
                 <div class="select">
-                    <select v-model="idProject">
+                    <select v-model="projectId">
                         <option value="">Selecione o projeto</option>
                         <option v-for="project in projects" :key="project.id" :value="project.id" >
                             {{ project.name }}
@@ -23,8 +23,9 @@
 </template>
 
 <script lang="ts">
-import { useStore, store } from "@/store";
-import { ADD_TASK } from "@/store/mutations.types";
+import { NotifyType } from "@/interfaces/INotify";
+import { useStore, store } from "@/store"
+import { ADD_TASK, NOTIFY } from "@/store/mutations.types";
 import { computed, defineComponent } from "vue";
 
 import Temporizador from "../../components/Temporizador.vue";
@@ -38,6 +39,7 @@ export default defineComponent({
     setup() {
         const store = useStore();
         return {
+            store,
             projects: computed(() => store.state.projects),
             tasks: computed(()=> store.state.tasks)
         }
@@ -45,7 +47,7 @@ export default defineComponent({
     data() {
         return {
             description: "",
-            idProject: ""
+            projectId: ""
         }
     },
     methods: {
@@ -54,7 +56,7 @@ export default defineComponent({
             store.commit(ADD_TASK, {
                 description: this.description,
                 timeInSeconds: timeInSeconds,
-                project: this.projects.find(p => p.id === this.idProject)
+                project: this.projects.find(p => p.id === this.projectId)
             });
 
             // this.$emit("onSaveTask", {

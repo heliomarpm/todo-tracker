@@ -32,7 +32,7 @@ export default createRouter({
                     path: 'add', name: 'new project', component: () => import('../pages/projects/AddEdit.vue')
                 },
                 {
-                    path: 'edit:id', name: 'edit project', component: () => import('../pages/projects/AddEdit.vue'), props: true
+                    path: 'edit/:id', name: 'edit project', component: () => import('../pages/projects/AddEdit.vue'), props: true
                 },
             ]
         },

@@ -1,14 +1,16 @@
 // import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import { InjectionKey } from "vue";
-import { ADD_PROJECT, ADD_TASK, EDIT_PROJECT, EDIT_TASK, REMOVE_PROJECT, REMOVE_TASK } from "./mutations.types";
+import { ADD_PROJECT, ADD_TASK, EDIT_PROJECT, EDIT_TASK, NOTIFY, REMOVE_PROJECT, REMOVE_TASK } from "./mutations.types";
 
 import IProject from "@/interfaces/IProject";
 import ITask from "@/interfaces/ITask";
+import INotify, { NotifyType } from "@/interfaces/INotify";
 
 export interface IState {
     projects: IProject[],
-    tasks: ITask[]
+    tasks: ITask[],
+    notifications: INotify[]
 }
 
 export const keyStore: InjectionKey<Store<IState>> = Symbol();
@@ -23,6 +25,7 @@ export const store = createStore<IState>({
         // ],
         projects: (localStorage.getItem('projects') ? JSON.parse(localStorage.getItem('projects') as string) : []) as IProject[],
         tasks: (localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks') as string) : []) as ITask[],
+        notifications: [] as INotify[]
     },
     // https://vuex.vuejs.org/ptbr/guide/mutations
     // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Object_initializer
@@ -60,6 +63,15 @@ export const store = createStore<IState>({
             const index = state.tasks.findIndex(t => t.id === task.id);
             state.tasks[index] = task;
             localStorage.setItem('tasks', JSON.stringify(state.tasks));
+        },
+
+        [NOTIFY](state, notify: INotify) {
+            notify.id = new Date().getTime();
+            state.notifications.push(notify);
+
+            setTimeout(() => {
+                state.notifications = state.notifications.filter(n => n.id !== notify.id);
+            }, 3000);
         }
     }
 });

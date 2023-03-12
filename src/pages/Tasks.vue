@@ -13,7 +13,7 @@
   
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { useStore } from '@/store';
+import { useStore } from '@/store'
 
 import Formulario from './tasks/Add.vue';
 import Box from '../components/Box.vue';

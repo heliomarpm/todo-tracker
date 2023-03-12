@@ -5,7 +5,8 @@
             <div class="column">
                 <Cronometro :secondTime="task.timeInSeconds" />
             </div>
-            <Botao text="remover" @onClick="removeTask()" icon="fas fa-trash" />
+            <!-- <Botao text="remover" @onClick="removeTask()" icon="fas fa-trash" /> -->
+            <button class="delete" @onClick="removeTask()" />
         </div>
     </Box>
 </template>
@@ -13,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import Cronometro from '../../components/Cronometro.vue';
-import Botao from '../../components/Botao.vue';
+// import Botao from '../../components/Botao.vue';
 import Box from '../../components/Box.vue';
 
 import ITask from '../../interfaces/ITask';
@@ -22,7 +23,7 @@ export default defineComponent({
     name: 'TaskComp',
     components: {
         Cronometro,
-        Botao,
+        // Botao,
         Box
     },
     // emits: ["onRemoveTask"],
