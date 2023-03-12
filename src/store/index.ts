@@ -5,7 +5,7 @@ import { ADD_PROJECT, ADD_TASK, EDIT_PROJECT, EDIT_TASK, NOTIFY, REMOVE_PROJECT,
 
 import IProject from "@/interfaces/IProject";
 import ITask from "@/interfaces/ITask";
-import INotify, { NotifyType } from "@/interfaces/INotify";
+import INotify from "@/interfaces/INotify";
 
 export interface IState {
     projects: IProject[],
