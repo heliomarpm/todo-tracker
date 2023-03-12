@@ -7,6 +7,6 @@ export enum NotifyType {
 export default interface INotify{
     id: number
     title: string,
-    description: string,
+    message: string,
     type: NotifyType,
 }

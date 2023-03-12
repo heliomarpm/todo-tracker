@@ -6,7 +6,7 @@
                 <!-- <button class="delete" aria-label="delete"></button> -->
             </div>
             <div class="message-body">
-                {{ notify.description }}
+                {{ notify.message }}
             </div>
         </article>
     </div>
