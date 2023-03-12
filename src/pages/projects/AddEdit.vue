@@ -18,14 +18,14 @@
 import { defineComponent } from 'vue';
 import { useStore } from "@/store"
 
-import { ADD_PROJECT, EDIT_PROJECT } from '@/store/mutations.types';
 import { NotifyType } from '@/interfaces/INotify';
 import { notifyMixin } from '@/mixins/notify.mixin';
+import { EDIT_PROJECT, ADD_PROJECT } from '@/store/actions.types';
 
 export default defineComponent({
     name: "ProjectAddEdit",
     props: {
-        id: { type: String }
+        id: { type: Number }
     },
     setup() {
         const store = useStore();
@@ -34,8 +34,10 @@ export default defineComponent({
         }
     },
     mounted() {
+        console.log("mounted", this.id);
         if (this.id) {
             const project = this.store.state.projects.find(p => p.id === this.id);
+            console.log("project", project);
             this.projectName = project?.name || '';
         }
     },
@@ -65,11 +67,16 @@ export default defineComponent({
                 }
 
                 // EDICAO
-                this.store.commit(EDIT_PROJECT, {
+                // this.store.commit(EDIT_PROJECT, {
+                //     id: this.id,
+                //     name: this.projectName
+                // });
+                this.store.dispatch(EDIT_PROJECT, {
                     id: this.id,
                     name: this.projectName
+                }).then(() => {
+                    this.notifySuccess("Projeto ALTERADO com sucesso!");
                 });
-                this.notify("PROJETO", "Projeto ALTERADO com sucesso!", NotifyType.SUCCESS);
             }
             else {
                 const projeto = this.store.state.projects.find((p) => p.name === this.projectName); // primeiro, buscamos pelo projeto
@@ -77,17 +84,25 @@ export default defineComponent({
                     this.notify('Ops!', "Projeto já cadastrado!", NotifyType.ERROR);
                     return; // ao fazer return aqui, o restante do método salvarTarefa não será executado. chamamos essa técnica de early return :)
                 }
-                this.store.commit(ADD_PROJECT, this.projectName);
-                this.notify("PROJETO", "Projeto ADICIONADO com sucesso!", NotifyType.SUCCESS);
+                // this.store.commit(ADD_PROJECT, this.projectName);
+                this.store.dispatch(ADD_PROJECT, this.projectName)
+                    .then(() => {
+                        this.notifySuccess("Projeto ADICIONADO com sucesso!");
+                    });
             }
-            this.projectName = "";
+            // this.projectName = "";
 
             // this.store.commit("NOTIFY", {
             //     title: "PROJETO",
             //     description: "Projeto GRAVADO com sucesso!",
             //     type: NotifyType.SUCCESS
             // })
-            
+
+            // this.$router.push("/projects");
+        },
+        notifySuccess(message: string) {
+            this.projectName = "";
+            this.notify("PROJETO", message, NotifyType.SUCCESS);
             this.$router.push("/projects");
         }
     }
