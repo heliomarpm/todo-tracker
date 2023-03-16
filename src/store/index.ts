@@ -46,27 +46,29 @@ export const store = createStore<IStateGlobal>({
         },
         [REMOVE_TASK](state, id: string) {
             console.log(REMOVE_TASK, id);
-            state.tasks = state.tasks.filter(t => t.id !== id);
+            state.tasks = state.tasks.filter(t => t.id != id);
             localStorage.setItem('tasks', JSON.stringify(state.tasks));
         },
         [EDIT_TASK](state, task: ITask) {
-            const index = state.tasks.findIndex(t => t.id === task.id);
+            const index = state.tasks.findIndex(t => t.id == task.id);
             state.tasks[index] = task;
             localStorage.setItem('tasks', JSON.stringify(state.tasks));
         },
-
         [NOTIFY](state, notify: INotify) {
             notify.id = new Date().getTime();
             state.notifications.push(notify);
 
             setTimeout(() => {
-                state.notifications = state.notifications.filter(n => n.id !== notify.id);
+                state.notifications = state.notifications.filter(n => n.id != notify.id);
             }, 3000);
         }
     },
-    // actions: {
-
-    // },
+    actions: {
+        
+        [EDIT_TASK]({ commit }, task: ITask) {
+            commit(EDIT_TASK, task);
+        }
+    },
     modules: {
         project,
     }
