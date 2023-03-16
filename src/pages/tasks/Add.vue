@@ -25,7 +25,7 @@
 <script lang="ts">
 import { NotifyType } from "@/interfaces/INotify";
 import { useStore, store } from "@/store"
-import { ADD_TASK } from "@/store/mutations.types";
+import { ADD_TASK } from "@/store/types/mutations";
 import { computed, defineComponent } from "vue";
 
 import Temporizador from "../../components/Temporizador.vue";
@@ -44,7 +44,7 @@ export default defineComponent({
         return {
             store,
             notify,
-            projects: computed(() => store.state.projects),
+            projects: computed(() => store.state.project.projects),
             tasks: computed(() => store.state.tasks)
         }
     },

@@ -44,7 +44,7 @@ import { computed, defineComponent } from 'vue';
 import { useStore } from "@/store"
 
 import { NotifyType } from '@/interfaces/INotify';
-import { GET_PROJECTS, REMOVE_PROJECT } from '@/store/actions.types';
+import { GET_PROJECTS, REMOVE_PROJECT } from '@/store/types/actions';
 
 export default defineComponent({
     name: "ProjectList",
@@ -54,11 +54,11 @@ export default defineComponent({
 
         return {
             store,
-            projects: computed(() => store.state.projects),
+            projects: computed(() => store.state.project.projects),
         }
     },
     methods: {
-        removeProject(id: string) {
+        removeProject(id: number) {
             // this.store.commit(REMOVE_PROJECT, id);
 
             this.store.dispatch(REMOVE_PROJECT, id)

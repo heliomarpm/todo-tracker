@@ -20,12 +20,12 @@ import { useStore } from "@/store"
 
 import { NotifyType } from '@/interfaces/INotify';
 import { notifyMixin } from '@/mixins/notify.mixin';
-import { EDIT_PROJECT, ADD_PROJECT } from '@/store/actions.types';
+import { EDIT_PROJECT, ADD_PROJECT } from '@/store/types/actions';
 
 export default defineComponent({
     name: "ProjectAddEdit",
     props: {
-        id: { type: Number }
+        id: { type: Number, default: 0 }
     },
     setup() {
         const store = useStore();
@@ -36,7 +36,8 @@ export default defineComponent({
     mounted() {
         console.log("mounted", this.id);
         if (this.id) {
-            const project = this.store.state.projects.find(p => p.id === this.id);
+            console.table(this.store.state.project.projects);
+            const project = this.store.state.project.projects.find(p => p.id == this.id);
             console.log("project", project);
             this.projectName = project?.name || '';
         }
@@ -60,7 +61,7 @@ export default defineComponent({
             // this.projectsList.push(project);
 
             if (this.id) {
-                const projeto = this.store.state.projects.find((p) => p.id !== this.id && p.name === this.projectName); // primeiro, buscamos pelo projeto
+                const projeto = this.store.state.project.projects.find((p) => p.id != this.id && p.name == this.projectName); // primeiro, buscamos pelo projeto
                 if (projeto) { // se o projeto não existe...
                     this.notify('Ops!', "Já existe um projeto com esse nome!", NotifyType.ERROR);
                     return; // ao fazer return aqui, o restante do método salvarTarefa não será executado. chamamos essa técnica de early return :)
@@ -79,7 +80,7 @@ export default defineComponent({
                 });
             }
             else {
-                const projeto = this.store.state.projects.find((p) => p.name === this.projectName); // primeiro, buscamos pelo projeto
+                const projeto = this.store.state.project.projects.find((p) => p.name === this.projectName); // primeiro, buscamos pelo projeto
                 if (projeto) { // s
                     this.notify('Ops!', "Projeto já cadastrado!", NotifyType.ERROR);
                     return; // ao fazer return aqui, o restante do método salvarTarefa não será executado. chamamos essa técnica de early return :)
