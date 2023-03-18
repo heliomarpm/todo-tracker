@@ -19,7 +19,24 @@
         <Tarefa v-for="(task, index) in tasks" :key="index" :task="task" @onRemoveTask="removeTask(task)"
             @onSelectTask="selectTask(task)" />
 
-        <div class="modal" :class="{ 'is-active': selectedTask }" v-if="selectedTask">
+
+        <Modal :show="selectedTask != null" title="Editando uma tarefa" v-if="selectedTask">
+            <template v-slot:body>
+                <div class="field">
+                    <label for="descricaoDaTarefa" class="label">
+                        Descrição
+                    </label>
+                    <input type="text" class="input" v-model="selectedTask.description" id="taskDescription" />
+                </div>
+            </template>
+            <template v-slot:footer>
+                <button @click="editTask" class="button is-success">Salvar alterações</button>
+                <button @click="closeModal" class="button">Cancelar</button>
+            </template>
+        </Modal>
+
+
+        <!-- <div class="modal" :class="{ 'is-active': selectedTask }" v-if="selectedTask">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
@@ -39,7 +56,8 @@
                     <button @click="closeModal" class="button">Cancelar</button>
                 </footer>
             </div>
-        </div>
+        </div>  -->
+
     </div>
 </template>
   
@@ -50,6 +68,7 @@ import { useStore } from '@/store'
 import Formulario from './tasks/Add.vue';
 import Box from '../components/Box.vue';
 import Tarefa from './tasks/Task.vue';
+import Modal from '../components/Modal.vue';
 
 import ITask from '../interfaces/ITask';
 import { GET_PROJECTS } from '@/store/types/actions';
@@ -59,7 +78,8 @@ export default defineComponent({
     components: {
         Formulario,
         Tarefa,
-        Box
+        Box,
+        Modal,
     },
     setup() {
         const store = useStore();

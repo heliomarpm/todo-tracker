@@ -4,5 +4,5 @@ export default interface ITask {
     id: string;
     timeInSeconds: number;
     description: string;
-    project?: IProject;
+    project: IProject;
 }
