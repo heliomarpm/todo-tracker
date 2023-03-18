@@ -26,13 +26,13 @@ import Box from '../../components/Box.vue';
 import ITask from '../../interfaces/ITask';
 
 export default defineComponent({
-    name: 'TaskComp',
+    name: 'TaskItem',
     components: {
         Cronometro,
         // Botao,
         Box
     },
-    emits: ["onRemoveTask", "onSelectTask"], // ? pq emits funciona mesmo comentado
+    // emits: ["onRemoveTask", "onSelectTask"], // ? pq emits funciona mesmo comentado
     props: {
         task: {
             type: Object as PropType<ITask>,

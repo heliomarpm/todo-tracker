@@ -1,5 +1,6 @@
 <template>
-    <Formulario @onSaveTask="addTask" />
+    <!-- <Formulario @onSaveTask="addTask" /> -->
+    <Formulario/>
     <div class="list">
         <Box v-if="tasks.length === 0">
             Você ainda não adicionou nenhuma tarefa!

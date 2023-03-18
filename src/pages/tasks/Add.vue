@@ -1,13 +1,14 @@
 
 <template>
-    <div class="box form">
+    <div div class="box form">
         <div class="columns">
-            <div class="column is-5" role="form" aria-label="Formulário para a criação de uma nova tarefa">
-                <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?" v-model="description" />
+            <div class="column is-6" role="form" aria-label="Formulário para a criação de uma nova tarefa">
+                <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?"
+                    v-model="data.description" />
             </div>
             <div class="column is-3">
                 <div class="select">
-                    <select v-model="projectId">
+                    <select v-model="data.projectId">
                         <option value="">Selecione o projeto</option>
                         <option v-for="project in projects" :key="project.id" :value="project.id">
                             {{ project.name }}
@@ -24,59 +25,108 @@
 
 <script lang="ts">
 import { NotifyType } from "@/interfaces/INotify";
-import { useStore, store } from "@/store"
+import { useStore } from "@/store"
 import { ADD_TASK } from "@/store/types/mutations";
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
+
+import useNotify from "@/hooks/notify.hook";
 
 import Temporizador from "../../components/Temporizador.vue";
-import useNotificator from "@/hooks/notify.hook";
 
 export default defineComponent({
-    name: "AddTaskComp",
+    name: "AddTask",
     components: {
         Temporizador,
     },
-    // emits: ["onSaveTask"],
+    
+    /**
+     * PADRÃO COMPOSITION API
+     */
+    // setup(pros, { emit }) {
     setup() {
         const store = useStore();
-        const { notify } = useNotificator();
+        const { notify } = useNotify();
 
-        return {
-            store,
-            notify,
-            projects: computed(() => store.state.project.projects),
-            tasks: computed(() => store.state.tasks)
-        }
-    },
-    data() {
-        return {
+        const projects = computed(() => store.state.project.projects);
+
+        const data = ref({
             description: "",
-            projectId: 0
-        }
-    },
-    methods: {
-        stopTask(timeInSeconds: number): void {
-            console.log(`stopTask [${this.description}]:`, timeInSeconds);
+            projectId: 0,
+        })
+
+        const stopTask = (timeInSeconds: number): void => {
+            console.log(`stopTask [${data.value.description}]:`, timeInSeconds);
             store.commit(ADD_TASK, {
-                description: this.description,
+                description: data.value.description,
                 timeInSeconds: timeInSeconds,
-                project: this.projects.find(p => p.id === this.projectId)
+                project: projects.value.find(p => p.id == data.value.projectId)
             });
 
-            this.notify(
-                "Tudo certo",
-                `Tarefa [${this.description}], adicionada com sucesso!`,
+            notify("Tudo certo",
+                `Tarefa [${data.value.description}], adicionada com sucesso!`,
                 NotifyType.SUCCESS);
 
-
-            // this.$emit("onSaveTask", {
-            //     description: this.description,
+            // emit("onSaveTask", {
+            //     description: data.value.description,
             //     timeInSeconds: timeInSeconds,
-            //     project: this.projects.find(p => p.id === this.idProject)
+            //     project: projects.value.find(p => p.id === data.value.projectId)
             // });
-            this.description = "";
+
+            data.value.description = "";
         }
-    }
+
+        return {
+            data,
+            stopTask,
+            projects
+        }
+    },
+
+    /**
+     * PADRÃO OPTIONS API
+     */
+    
+    // emits: ["onSaveTask"],
+    // setup() {
+    //     const store = useStore();
+    //     const { notify } = useNotify();
+
+    //     return {
+    //         store,
+    //         notify,
+    //         projects: computed(() => store.state.project.projects),
+    //         tasks: computed(() => store.state.tasks)
+    //     }
+    // },
+    // data() {
+    //     return {
+    //         description: "",
+    //         projectId: 0
+    //     }
+    // },
+    // methods: {
+    //     stopTask(timeInSeconds: number): void {
+    //         console.log(`stopTask [${this.description}]:`, timeInSeconds);
+    //         store.commit(ADD_TASK, {
+    //             description: this.description,
+    //             timeInSeconds: timeInSeconds,
+    //             project: this.projects.find(p => p.id === this.projectId)
+    //         });
+
+    //         this.notify(
+    //             "Tudo certo",
+    //             `Tarefa [${this.description}], adicionada com sucesso!`,
+    //             NotifyType.SUCCESS);
+
+
+    //         // this.$emit("onSaveTask", {
+    //         //     description: this.description,
+    //         //     timeInSeconds: timeInSeconds,
+    //         //     project: this.projects.find(p => p.id === this.idProject)
+    //         // });
+    //         this.description = "";
+    //     }
+    // }
 });
 </script>
 
