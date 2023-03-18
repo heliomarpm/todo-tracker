@@ -1,11 +1,20 @@
 <template>
     <!-- <Formulario @onSaveTask="addTask" /> -->
-    <Formulario/>
+    <Formulario />
     <div class="list">
-        <Box v-if="tasks.length === 0">
-            Você ainda não adicionou nenhuma tarefa!
+        <Box v-if="!hasTasks"> <!-- v-if="tasks.length === 0"> -->
+            E ai, tá de boa na lagoa?
         </Box>
-        <img src="@/assets/freetime.jpg" v-if="tasks.length === 0" />
+        <img src="@/assets/freetime.jpg" v-if="!hasTasks">
+
+        <div class="field" v-if="hasTasks">
+            <p class="control has-icons-left">
+                <input class="input" type="text" placeholder="Digite para filtrar" v-model="filter" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                </span>
+            </p>
+        </div>
 
         <Tarefa v-for="(task, index) in tasks" :key="index" :task="task" @onRemoveTask="removeTask(task)"
             @onSelectTask="selectTask(task)" />
@@ -35,7 +44,7 @@
 </template>
   
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useStore } from '@/store'
 
 import Formulario from './tasks/Add.vue';
@@ -43,6 +52,7 @@ import Box from '../components/Box.vue';
 import Tarefa from './tasks/Task.vue';
 
 import ITask from '../interfaces/ITask';
+import { GET_PROJECTS } from '@/store/types/actions';
 
 export default defineComponent({
     name: 'TasksPage',
@@ -53,10 +63,30 @@ export default defineComponent({
     },
     setup() {
         const store = useStore();
-        return {
-            store,
-            tasks: computed(() => store.state.tasks),
-        }
+        store.dispatch(GET_PROJECTS);
+
+        const filter = ref("");
+
+        /**
+         * FILTRANDO NA MEMORIA APENAS
+         */
+        const tasks = computed(() => store.state.tasks
+            .filter(t => !filter.value || t.description.toLowerCase().includes(filter.value.toLowerCase())));
+
+        return { store, tasks, filter }
+
+        /**
+         * FILTRANDO DIRETO NA API, COM UM OBSERVER DO VUE
+         */
+        // watchEffect(() => {
+        //     store.dispatch(GET_TASKS, filter.value);
+        // })
+
+        // return {
+        //     store,
+        //     tasks: computed(() => store.state.tasks),
+        //     filter
+        // }
     },
     data() {
         return {
@@ -88,6 +118,11 @@ export default defineComponent({
             this.selectedTask = null;
         }
     },
+    computed: {
+        hasTasks(): boolean {
+            return this.tasks.length > 0;
+        }
+    }
     // created() { //setup já executa o created
     //     // console.log(this.$router);
     // }
