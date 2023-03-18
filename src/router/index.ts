@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 import TasksPage from '../pages/Tasks.vue';
 import ProjectsPage from "../pages/Projects.vue";
@@ -16,14 +16,16 @@ import ProjectsPage from "../pages/Projects.vue";
 // export default router;
 
 export default createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
-            path: '/', name: 'tasks', component: TasksPage
+            path: '/', name: 'tasks', component: TasksPage,
+            //  meta: { transition: 'moveUp' }
         },
         {
             path: '/projects',
             component: ProjectsPage,
+            //  meta: { transition: 'fade' },
             children: [
                 {
                     path: '', name: 'projects', component: () => import('../pages/projects/List.vue')
@@ -38,6 +40,9 @@ export default createRouter({
         },
         {
             path: '/about', name: 'about', component: () => import('../pages/About.vue')
+        },
+        {
+            path: '/:pathMath(.*)*', name: 'notfound', component: () => import('../pages/NotFound.vue')
         }
     ]
 });

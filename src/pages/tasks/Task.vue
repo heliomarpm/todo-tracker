@@ -1,5 +1,5 @@
 <template>
-    <Box>
+    <Box class="pointer" @click="selectTask">
         <div class="columns">
             <div class="column is-7">{{ task.description || "Tarefa não definida" }}</div>
             <div class="column is-3">
@@ -9,7 +9,10 @@
                 <Cronometro :secondTime="task.timeInSeconds" />
             </div>
             <!-- <Botao text="remover" @onClick="removeTask()" icon="fas fa-trash" /> -->
-            <button class="delete" @onClick="removeTask()" />
+            <!-- <span class="icon" >
+                <i class="fas fa-edit"></i>
+            </span>&nbsp; -->
+            <button class="delete" @click="removeTask" />
         </div>
     </Box>
 </template>
@@ -23,13 +26,13 @@ import Box from '../../components/Box.vue';
 import ITask from '../../interfaces/ITask';
 
 export default defineComponent({
-    name: 'TaskComp',
+    name: 'TaskItem',
     components: {
         Cronometro,
         // Botao,
         Box
     },
-    // emits: ["onRemoveTask"],
+    // emits: ["onRemoveTask", "onSelectTask"], // ? pq emits funciona mesmo comentado
     props: {
         task: {
             type: Object as PropType<ITask>,
@@ -40,6 +43,10 @@ export default defineComponent({
         removeTask() {
             console.log("Remover tarefa", this);
             this.$emit("onRemoveTask", this.task);
+        },
+        selectTask() {
+            console.log("Selecionar tarefa", this);
+            this.$emit("onSelectTask", this.task);
         }
     }
 }
@@ -58,5 +65,8 @@ export default defineComponent({
     background-position: center;
     cursor: pointer;
 
+}
+.pointer {
+  cursor: pointer;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
     <div class="is-flex is-align-items-center is-justify-content-space-between">
         <Cronometro :secondTime="timeInSeconds" />
-        <Botao text="start" @onClick="start" icon="fas fa-play" :disabled="timerStarted" />
-        <Botao text="stop" @onClick="stop" icon="fas fa-stop" :disabled="!timerStarted"/>
+        <Botao @onClick="start" icon="fas fa-play" :disabled="timerStarted" />
+        <Botao @onClick="stop" icon="fas fa-stop" :disabled="!timerStarted"/>
     </div>
 </template>
 

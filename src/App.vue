@@ -5,7 +5,12 @@
     </div>
     <div class="column is-three-quarter content">
       <Notify />
-      <router-view />
+      <!-- <router-view v-slot="{Component}">
+        <transition :name="$route.meta.transition || 'fade'" mode="out-in">
+          <component :is="Component" :key="$route.path"></component>
+        </transition>
+      </router-view> -->
+      <RouterView/>
     </div>
   </main>
 </template>
@@ -49,5 +54,15 @@ main.dark-mode {
 
 .content {
   background-color: var(--bg-primario);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
