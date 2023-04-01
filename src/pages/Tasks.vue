@@ -23,7 +23,7 @@
         <Modal :show="selectedTask != null" title="Editando uma tarefa" v-if="selectedTask" @onClose="closeModal">
             <template v-slot:body>
                 <div class="field">
-                    <label for="descricaoDaTarefa" class="label">
+                    <label for="taskDescription" class="label">
                         Descrição
                     </label>
                     <input type="text" class="input" v-model="selectedTask.description" id="taskDescription" />
